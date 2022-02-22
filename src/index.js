@@ -29,6 +29,8 @@ function init() {
   camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
 
   scene = new THREE.Scene();
+
+  // The Sky color
   scene.background = new THREE.Color( 0xbfd1e5 );
 
   // sides
@@ -66,8 +68,8 @@ function init() {
 
   const geometries = [];
 
-  for ( let z = 0; z < worldDepth; z ++ ) {
-    for ( let x = 0; x < worldWidth; x ++ ) {
+  for ( let z = 0; z < worldDepth; z++ ) {
+    for ( let x = 0; x < worldWidth; x++ ) {
       const h = getY( x, z );
 
       matrix.makeTranslation(
@@ -76,10 +78,10 @@ function init() {
         z * 100 - worldHalfDepth * 100
       );
 
-      const px = getY( x + 1, z );
-      const nx = getY( x - 1, z );
-      const pz = getY( x, z + 1 );
-      const nz = getY( x, z - 1 );
+      const px = getY(x + 1, z); /* Right */
+      const nx = getY(x - 1, z); /* Left */
+      const pz = getY(x, z + 1); /* Forward */
+      const nz = getY(x, z - 1); /* Backward */
 
       geometries.push( pyGeometry.clone().applyMatrix4( matrix ) );
 
@@ -128,11 +130,8 @@ function init() {
   controls.lookSpeed = 0.125;
   controls.lookVertical = true;
 
-  //
   // controls.activeLook = false;
   controls.constrainVertical = true;
-
-  // controls.;
 
   stats = new Stats();
   container.appendChild( stats.dom );
@@ -153,9 +152,10 @@ function generateHeight( width, height ) {
   const data = [], perlin = new ImprovedNoise(),
     size = width * height, z = Math.random() * 100;
 
-  let quality = 2;
+  let quality = 4;
 
   for ( let j = 0; j < 4; j ++ ) {
+    // TODO: better
     if ( j === 0 ) {
       for ( let i = 0; i < size; i ++ ) { data[i] = 0; }
     }
