@@ -112,6 +112,9 @@ function init() {
   const mesh = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { map: texture, side: THREE.DoubleSide } ) );
   scene.add( mesh );
 
+  // TODO:
+  drawBlock(worldHalfWidth, 70, worldHalfDepth);
+
   const ambientLight = new THREE.AmbientLight( 0xcccccc );
   scene.add( ambientLight );
 
@@ -184,4 +187,40 @@ function animate() {
 function render() {
   controls.update(clock.getDelta());
   renderer.render(scene, camera);
+}
+
+function drawBlock(x, y, z) {
+  const loader = new THREE.CubeTextureLoader();
+  loader.setPath( '/models/textures/minecraft/' );
+
+  // TODO
+  const textureCube = loader.load( [
+    'grass_dirt.png', // px
+    'grass_dirt.png', // nx
+    'grass.png', // py
+    'dirt.png', // ny
+    'grass_dirt.png', // pz
+    'grass_dirt.png', // nz
+  ] );
+
+  // const geometry = new THREE.BoxGeometry(x, y, z, 16, 16, 16);
+  const geometry = new THREE.BoxGeometry(16, 16, 16);
+  // const material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: textureCube } );
+  // const material = new THREE.MeshBasicMaterial( { color: 0xffffff, map: textureCube } );
+
+  // var geometry = new THREE.CubeGeometry(10, 10, 10);
+  var material = new THREE.MeshPhongMaterial({ transparent: false, map: THREE.ImageUtils.loadTexture('/models/textures/minecraft/dirt.png') });
+  // material.side = THREE.;
+  // material.side = THREE.Side;
+  material.side = THREE.FrontSide;
+  // material.side = THREE.BackSide;
+  // material.side = THREE.DoubleSide;
+
+  // const texture = new THREE.TextureLoader().load( '/models/textures/minecraft/atlas.png' );
+  // texture.magFilter = THREE.NearestFilter;
+  // var mesh = new THREE.Mesh(geometry, meshMaterial);
+
+  const cube = new THREE.Mesh( geometry, material );
+
+  scene.add(cube);
 }
