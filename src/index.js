@@ -310,3 +310,13 @@ function drawSmiley(x, y, z) {
     drawBlock(cubes[i].x,cubes[i].y,cubes[i].z,cubes[i].color);
   }
 }
+
+function drawTree(x, y, z) {
+  let cubes = [
+    {x: 0, y: 2, z: 0, color: 'black' },
+  ];
+
+  for (let i = 0; i < cubes.length; i++) {
+    drawBlock(cubes[i].x,cubes[i].y,cubes[i].z,cubes[i].color);
+  }
+}
