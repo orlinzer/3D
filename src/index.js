@@ -14,7 +14,8 @@ let camera, controls, scene, renderer;
 const worldWidth = 128, worldDepth = 128;
 const worldHalfWidth = worldWidth / 2;
 const worldHalfDepth = worldDepth / 2;
-const data = generateHeight( worldWidth, worldDepth );
+// const data = generateHeight( worldWidth, worldDepth );
+const data = new Array(worldWidth *  worldDepth).map(()=>0);
 
 const clock = new THREE.Clock();
 
@@ -112,15 +113,17 @@ function init() {
   const mesh = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { map: texture, side: THREE.DoubleSide } ) );
   scene.add( mesh );
 
-  // TODO:
-  drawBlock(worldHalfWidth, 70, worldHalfDepth);
-
   const ambientLight = new THREE.AmbientLight( 0xcccccc );
   scene.add( ambientLight );
 
   const directionalLight = new THREE.DirectionalLight( 0xffffff, 2 );
   directionalLight.position.set( 1, 1, 0.5 ).normalize();
   scene.add( directionalLight );
+
+
+  drawSmiley(0, 0, 0);
+  drawSmiley(0, 20, 0);
+  drawSmiley(50, 0, 0);
 
   renderer = new THREE.WebGLRenderer( { antialias: true } );
   renderer.setPixelRatio( window.devicePixelRatio );
@@ -157,15 +160,14 @@ function generateHeight( width, height ) {
 
   let quality = 4;
 
-  for ( let j = 0; j < 4; j ++ ) {
-    // TODO: better
-    if ( j === 0 ) {
-      for ( let i = 0; i < size; i ++ ) { data[i] = 0; }
+  for ( let j = 0; j < 4; j++ ) {
+    for ( let i = 0; i < size; i++ ) {
+      data[i] = 0;
     }
 
-    for ( let i = 0; i < size; i ++ ) {
+    for ( let i = 0; i < size; i++ ) {
       const x = i % width, y = ( i / width ) | 0;
-      data[i] += perlin.noise( x / quality, y / quality, z ) * quality;
+      data[i]+= perlin.noise( x / quality, y / quality, z ) * quality;
     }
     quality *= 4;
   }
@@ -189,7 +191,7 @@ function render() {
   renderer.render(scene, camera);
 }
 
-function drawBlock(x, y, z) {
+function drawBlock(x, y, z, color) {
   const loader = new THREE.CubeTextureLoader();
   loader.setPath( '/models/textures/minecraft/' );
 
@@ -204,12 +206,19 @@ function drawBlock(x, y, z) {
   ] );
 
   // const geometry = new THREE.BoxGeometry(x, y, z, 16, 16, 16);
-  const geometry = new THREE.BoxGeometry(16, 16, 16);
+  // let X = 50 * 100 - worldHalfWidth * 100;
+  // let H = 50 * 100;
+  // let Z = 50 * 100 - worldHalfDepth * 100;
+  // const geometry = new THREE.BoxGeometry(X, H, Z);
+  const geometry = new THREE.BoxGeometry(100, 100, 100);
+  // const geometry = new THREE.BoxGeometry(16, 16, 16);
   // const material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: textureCube } );
   // const material = new THREE.MeshBasicMaterial( { color: 0xffffff, map: textureCube } );
-
   // var geometry = new THREE.CubeGeometry(10, 10, 10);
-  var material = new THREE.MeshPhongMaterial({ transparent: false, map: THREE.ImageUtils.loadTexture('/models/textures/minecraft/dirt.png') });
+  geometry.translate(x * 100, y * 100, z * 100);
+
+  var material = new THREE.MeshPhongMaterial({ color: color });
+  // var material = new THREE.MeshPhongMaterial({ transparent: false, map: THREE.ImageUtils.loadTexture('/models/textures/minecraft/dirt.png') });
   // material.side = THREE.;
   // material.side = THREE.Side;
   material.side = THREE.FrontSide;
@@ -223,4 +232,81 @@ function drawBlock(x, y, z) {
   const cube = new THREE.Mesh( geometry, material );
 
   scene.add(cube);
+}
+
+function drawSmiley(x, y, z) {
+  let cubes = [
+
+  {x: 0, y: 2, z: 0, color: 'black' },
+  {x: 0, y: 3, z: 0, color: 'black' },
+  {x: 0, y: 4, z: 0, color: 'black' },
+  {x: 0, y: 5, z: 0, color: 'black' },
+  {x: 0, y: 6, z: 0, color: 'black' },
+  {x: 0, y: 7, z: 0, color: 'black' },
+  {x: 0, y: 8, z: 0, color: 'black' },
+  {x: 0, y: 9, z: 0, color: 'black' },
+  {x: 1, y: 9, z: 0, color: 'black' },
+  {x: 2, y: 9, z: 0, color: 'black' },
+  {x: 3, y: 9, z: 0, color: 'black' },
+  {x: 4, y: 9, z: 0, color: 'black' },
+  {x: 5, y: 9, z: 0, color: 'black' },
+  {x: 6, y: 9, z: 0, color: 'black' },
+  {x: 7, y: 9, z: 0, color: 'black' },
+  {x: 7, y: 8, z: 0, color: 'black' },
+  {x: 7, y: 7, z: 0, color: 'black' },
+  {x: 7, y: 6, z: 0, color: 'black' },
+  {x: 7, y: 5, z: 0, color: 'black' },
+  {x: 7, y: 4, z: 0, color: 'black' },
+  {x: 7, y: 3, z: 0, color: 'black' },
+  {x: 7, y: 2, z: 0, color: 'black' },
+  {x: 6, y: 2, z: 0, color: 'black' },
+  {x: 5, y: 2, z: 0, color: 'black' },
+  {x: 4, y: 2, z: 0, color: 'black' },
+  {x: 3, y: 2, z: 0, color: 'black' },
+  {x: 2, y: 2, z: 0, color: 'black' },
+  {x: 1, y: 2, z: 0, color: 'black' },
+
+  {x: 1, y: 3, z: 0, color: 'yellow' },
+  {x: 1, y: 4, z: 0, color: 'yellow' },
+  {x: 1, y: 5, z: 0, color: 'yellow' },
+  {x: 1, y: 6, z: 0, color: 'yellow' },
+  {x: 1, y: 7, z: 0, color: 'yellow' },
+  {x: 1, y: 8, z: 0, color: 'yellow' },
+  {x: 2, y: 8, z: 0, color: 'yellow' },
+  {x: 3, y: 8, z: 0, color: 'yellow' },
+  {x: 4, y: 8, z: 0, color: 'yellow' },
+  {x: 5, y: 8, z: 0, color: 'yellow' },
+  {x: 6, y: 8, z: 0, color: 'yellow' },
+  {x: 6, y: 7, z: 0, color: 'yellow' },
+  {x: 6, y: 6, z: 0, color: 'yellow' },
+  {x: 6, y: 5, z: 0, color: 'yellow' },
+  {x: 6, y: 4, z: 0, color: 'yellow' },
+  {x: 6, y: 3, z: 0, color: 'yellow' },
+  {x: 5, y: 3, z: 0, color: 'yellow' },
+  {x: 4, y: 3, z: 0, color: 'yellow' },
+  {x: 3, y: 3, z: 0, color: 'yellow' },
+  {x: 2, y: 3, z: 0, color: 'yellow' },
+
+  {x: 2, y: 4, z: 0, color: 'yellow' },
+  {x: 2, y: 5, z: 0, color: 'black' },
+  {x: 2, y: 6, z: 0, color: 'yellow' },
+  {x: 2, y: 7, z: 0, color: 'black' },
+  {x: 3, y: 7, z: 0, color: 'yellow' },
+  {x: 4, y: 7, z: 0, color: 'yellow' },
+  {x: 5, y: 7, z: 0, color: 'black' },
+  {x: 5, y: 6, z: 0, color: 'yellow' },
+  {x: 5, y: 5, z: 0, color: 'black' },
+  {x: 5, y: 4, z: 0, color: 'yellow' },
+  {x: 4, y: 4, z: 0, color: 'black' },
+  {x: 3, y: 4, z: 0, color: 'black' },
+
+  {x: 3, y: 5, z: 0, color: 'yellow' },
+  {x: 3, y: 6, z: 0, color: 'yellow' },
+  {x: 4, y: 5, z: 0, color: 'yellow' },
+  {x: 4, y: 6, z: 0, color: 'yellow' },
+  ];
+
+  for (let i = 0; i < cubes.length; i++) {
+    drawBlock(cubes[i].x,cubes[i].y,cubes[i].z,cubes[i].color);
+  }
 }
