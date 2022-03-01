@@ -120,10 +120,14 @@ function init() {
   directionalLight.position.set( 1, 1, 0.5 ).normalize();
   scene.add( directionalLight );
 
-
-  drawSmiley(0, 0, 0);
-  drawSmiley(0, 20, 0);
-  drawSmiley(50, 0, 0);
+  drawTree(0, 1, 0);
+  drawTree(10, 1, 0);
+  drawTree(20, 1, 0);
+  drawTree(20, 1, 10);
+  drawTree(20, 1, 20);
+  // drawSmiley(0, 0, 0);
+  // drawSmiley(0, 20, 0);
+  // drawSmiley(50, 0, 0);
 
   renderer = new THREE.WebGLRenderer( { antialias: true } );
   renderer.setPixelRatio( window.devicePixelRatio );
@@ -311,10 +315,91 @@ function drawSmiley(x, y, z) {
   }
 }
 
+function randomNumber(start, end) {
+  return Math.round(start + (Math.random() * (end - start)));
+}
+
 function drawTree(x, y, z) {
-  let cubes = [
-    {x: 0, y: 2, z: 0, color: 'black' },
-  ];
+  let cubes = [];
+    // {x: 0, y: 2, z: 0, color: '#642' },
+    // {x: 0, y: 3, z: 0, color: '#642' },
+    // {x: 0, y: 4, z: 0, color: '#642' },
+
+    // {x: 0, y: 5, z: 0, color: 'green' },
+    // {x: 1, y: 5, z: 1, color: 'green' },
+    // {x: 1, y: 5, z: 0, color: 'green' },
+    // {x: 1, y: 5, z: -1, color: 'green' },
+    // {x: 0, y: 5, z: -1, color: 'green' },
+    // {x: -1, y: 5, z: -1, color: 'green' },
+    // {x: -1, y: 5, z: 0, color: 'green' },
+    // {x: -1, y: 5, z: 1, color: 'green' },
+    // {x: 0, y: 5, z: 1, color: 'green' },
+
+    // {x: 0, y: 6, z: 0, color: 'green' },
+    // {x: 1, y: 6, z: 1, color: 'green' },
+    // {x: 1, y: 6, z: 0, color: 'green' },
+    // {x: 1, y: 6, z: -1, color: 'green' },
+    // {x: 0, y: 6, z: -1, color: 'green' },
+    // {x: -1, y: 6, z: -1, color: 'green' },
+    // {x: -1, y: 6, z: 0, color: 'green' },
+    // {x: -1, y: 6, z: 1, color: 'green' },
+    // {x: 0, y: 6, z: 1, color: 'green' },
+
+    // {x: 0, y: 7, z: 0, color: 'green' },
+    // {x: 1, y: 7, z: 1, color: 'green' },
+    // {x: 1, y: 7, z: 0, color: 'green' },
+    // {x: 1, y: 7, z: -1, color: 'green' },
+    // {x: 0, y: 7, z: -1, color: 'green' },
+    // {x: -1, y: 7, z: -1, color: 'green' },
+    // {x: -1, y: 7, z: 0, color: 'green' },
+    // {x: -1, y: 7, z: 1, color: 'green' },
+    // {x: 0, y: 7, z: 1, color: 'green' },
+
+  cubes.push({ x: x, y: y, z: z, color: '#642' });
+  cubes.push({ x: x, y: ++y, z: z, color: '#642' });
+  cubes.push({ x: x, y: ++y, z: z, color: '#642' });
+  if (randomNumber(0, 1)) {
+    cubes.push({ x: x, y: ++y, z: z, color: '#642' });
+  }
+  // cubes.push({ x: x, y: ++y, z: z, color: '#0f0' });
+
+  for (let h = 1; h < 4; h++) {
+    for (let w = -2; w < 3; w++) {
+      for (let d = -2; d < 3; d++) {
+        cubes.push({ x: x + w, y: y + h, z: z + d, color: '#0f0' });
+      }
+    }
+  }
+
+  for (let h = 1; h < 4; h++) {
+    for (let w = -2; w < 3; w++) {
+      if (randomNumber(0, 1)) {
+        cubes.push({ x: x + w, y: y + h, z: z + -3, color: '#0f0' });
+      }
+      if (randomNumber(0, 1)) {
+        cubes.push({ x: x + w, y: y + h, z: z + 3, color: '#0f0' });
+      }
+    }
+  }
+
+  for (let h = 1; h < 4; h++) {
+    for (let d = -2; d < 3; d++) {
+      if (randomNumber(0, 1)) {
+        cubes.push({ x: x + -3, y: y + h, z: z + d, color: '#0f0' });
+      }
+      if (randomNumber(0, 1)) {
+        cubes.push({ x: x + 3, y: y + h, z: z + d, color: '#0f0' });
+      }
+    }
+  }
+
+  for (let w = -2; w < 3; w++) {
+    for (let d = -2; d < 3; d++) {
+      if (randomNumber(0, 1)) {
+        cubes.push({ x: x + w, y: y + 4, z: z + d, color: '#0f0' });
+      }
+    }
+  }
 
   for (let i = 0; i < cubes.length; i++) {
     drawBlock(cubes[i].x,cubes[i].y,cubes[i].z,cubes[i].color);
